@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
+using ValueWrapper.SourceGeneration.Struct;
+using ValueWrapper.SourceLayout;
 
 namespace ValueWrapper;
 
@@ -13,23 +14,60 @@ public sealed class ValueWrapperGenerator : ISourceGenerator
 
     public void Execute(GeneratorExecutionContext context)
     {
+// #if DEBUG
+//         if (!Debugger.IsAttached)
+//         {
+//             Debugger.Launch();
+//         }
+// #endif
         if (context.SyntaxContextReceiver is not ValueWrapperReceiver receiver) return;
         
         foreach (var targetType in receiver.TargetTypes)
         {
             var symbol = context
                 .Compilation
-                .GetSemanticModel(targetType.SyntaxTree)
-                .GetDeclaredSymbol(targetType);
+                .GetSemanticModel(targetType.TypeDeclarationSyntax.SyntaxTree)
+                .GetDeclaredSymbol(targetType.TypeDeclarationSyntax);
             
             var @namespace = symbol.ContainingNamespace?.ToDisplayString() ?? "NoNamespace";
-            var structName = symbol.Name ?? "NoName";
+            var @struct = symbol.Name ?? "NoName";
 
-            var structGenerator = TypeCodeGenerator.CreateStructGenerator(@namespace, structName);
+            var source = _GenerateSource(@namespace, @struct, targetType.ValueType);
 
-            var source = structGenerator.Generate();
-            
-            context.AddSource($"{structName}.g.cs", source);   
+            context.AddSource($"{@struct}.g.cs", source);   
         }
+    }
+
+    private static string _GenerateSource(string @namespace, string @struct, string valueTypeName)
+    {
+        try
+        {
+            var generator = new StructGeneratorFactory().Create();
+
+            var config = new StructGenerator.Config
+            {
+                NamespaceName = @namespace,
+                StructName = @struct,
+                ValueTypeName = valueTypeName,
+                AccessModifier = AccessModifier.Public,
+                IndentationString = "    "
+            };
+            
+            var source = generator.Generate(config);
+            
+            Log(source);
+            
+            return source;
+        }
+        catch (Exception e)
+        {
+            Log(e.Message);
+            throw;
+        }
+    }
+
+    private static void Log(string text)
+    {
+        File.AppendAllText(@"D:\test.txt", text);
     }
 }

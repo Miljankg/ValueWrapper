@@ -2,7 +2,7 @@
 
 namespace ValueWrapper.Tests.Integration.TestProject;
 
-[ValueWrapper]
-public partial struct TestStruct
+[ValueWrapper(typeof(int))]
+public partial struct TestValue1
 {
 }

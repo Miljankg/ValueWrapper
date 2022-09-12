@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ValueWrapper": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "Project"
+    }
+  }
+}
