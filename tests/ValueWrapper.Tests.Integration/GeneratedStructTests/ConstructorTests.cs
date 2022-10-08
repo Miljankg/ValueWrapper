@@ -2,7 +2,7 @@ using FluentAssertions;
 using ValueWrapper.Tests.Integration.TestProject;
 using Xunit;
 
-namespace ValueWrapper.Tests.Integration;
+namespace ValueWrapper.Tests.Integration.GeneratedStructTests;
 
 public class ConstructorTests
 {

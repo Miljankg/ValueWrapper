@@ -2,7 +2,8 @@ namespace ValueWrapper.SourceLayout;
 
 internal enum AccessModifier
 {
-    Public = 0,
-    Internal = 1,
-    Private = 2
+    Unknown = 0,
+    Public = 1,
+    Internal = 2,
+    Private = 3
 }

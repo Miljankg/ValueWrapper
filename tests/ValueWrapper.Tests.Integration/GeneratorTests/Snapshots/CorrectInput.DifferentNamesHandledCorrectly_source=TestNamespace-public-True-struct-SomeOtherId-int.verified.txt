@@ -1,0 +1,17 @@
+﻿namespace TestNamespace
+{
+    public readonly partial struct SomeOtherId
+    {
+        public static SomeOtherId From(int value)
+        {
+            return new SomeOtherId(value);
+        }
+
+        public SomeOtherId(int value)
+        {
+            Value = value;
+        }
+
+        public int Value { get; }
+    }
+}
