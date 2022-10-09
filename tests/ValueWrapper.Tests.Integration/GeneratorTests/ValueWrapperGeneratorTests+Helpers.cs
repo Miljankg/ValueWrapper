@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using ValueWrapper.Tests.Integration.GeneratorTests.Helpers;
-using ValueWrapper.Tests.Integration.GeneratorTests.Helpers.AssertionExtensions;
-using VerifyXunit;
-using Xunit;
+﻿using ValueWrapper.Tests.Integration.GeneratorTests.Helpers;
 
 namespace ValueWrapper.Tests.Integration.GeneratorTests;
 
@@ -13,7 +8,7 @@ public partial class ValueWrapperGeneratorTests
 
     private static Source.Config GetDefaultConfig()
     {
-        return new Source.Config
+        return new Source.Config.Builder
         {
             Type = "struct",
             Namespace = "TestNamespace",
@@ -21,6 +16,6 @@ public partial class ValueWrapperGeneratorTests
             Partial = true,
             ValueType = "int",
             Name = "TestId"
-        };
+        }.Build();
     }
 }

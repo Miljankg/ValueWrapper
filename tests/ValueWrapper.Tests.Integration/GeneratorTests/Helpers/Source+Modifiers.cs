@@ -1,39 +1,30 @@
-﻿namespace ValueWrapper.Tests.Integration.GeneratorTests.Helpers;
+﻿using System;
+
+namespace ValueWrapper.Tests.Integration.GeneratorTests.Helpers;
 
 public sealed partial class Source
 {
-    public Source WithNamespace(string? @namespace)
-    {
-        CurrentConfig.Namespace = @namespace;
-        
-        return new Source(_template, CurrentConfig);
-    }
+    public Source WithNamespace(string? @namespace) 
+        => UpdateSource(b => b.Namespace = @namespace);
 
     public Source WithValueType(string valueType)
-    {
-        CurrentConfig.ValueType = valueType;
-        
-        return new Source(_template, CurrentConfig);
-    }
+        => UpdateSource(b => b.ValueType = valueType);
 
     public Source WithAccessModifier(string accessModifier)
-    {
-        CurrentConfig.AccessModifier = accessModifier;
-        
-        return new Source(_template, CurrentConfig);
-    }
+        => UpdateSource(b => b.AccessModifier = accessModifier);
 
     public Source WithName(string name)
-    {
-        CurrentConfig.Name = name;
-        
-        return new Source(_template, CurrentConfig);
-    }
+        => UpdateSource(b => b.Name = name);
 
     public Source MarkAsNonPartial()
+        => UpdateSource(b => b.Partial = false);
+
+    private Source UpdateSource(Action<Config.Builder> builderAction)
     {
-        CurrentConfig.Partial = false;
-        
-        return new Source(_template, CurrentConfig);
+        var builder = Config.Builder.From(CurrentConfig);
+
+        builderAction(builder);
+
+        return new Source(_template, builder.Build());
     }
 }
