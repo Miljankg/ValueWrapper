@@ -7,7 +7,7 @@ using Xunit;
 
 namespace ValueWrapper.Tests.Integration.GeneratorTests;
 
-public class ValueWrapperGeneratorTests
+public partial class ValueWrapperGeneratorTests
 {
     [UsesVerify]
     public class CorrectInput
@@ -79,22 +79,6 @@ public class ValueWrapperGeneratorTests
         {
             yield return new object[] { DefaultStruct.WithNamespace("SomeNamespace") };
             yield return new object[] { DefaultStruct.WithNamespace("SomeOtherNamespace") };
-        }
-
-
-        private static Source DefaultStruct => Source.Struct(GetDefaultConfig());
-
-        private static Source.Config GetDefaultConfig()
-        {
-            return new Source.Config
-            {
-                Type = "struct",
-                Namespace = "TestNamespace",
-                AccessModifier = "public",
-                Partial = true,
-                ValueType = "int",
-                Name = "TestId"
-            };
         }
     }
 }

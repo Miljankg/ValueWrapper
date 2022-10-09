@@ -49,23 +49,36 @@ public class ValueWrapperGenerator : IIncrementalGenerator
 
         foreach (var @struct in structs)
         {
+            if (!ValidateStruct(context, @struct)) continue;
+            
             var symbol = @struct.GetSymbol(compilation);
             
-            if (symbol is null) return;
+            if (symbol is null) continue;
 
             var attributeData = symbol.GetAttribute(compilation, typeof(ValueWrapperAttribute).FullName);
 
-            if (attributeData is null) return;
+            if (attributeData is null) continue;
 
             var valueType = GetValueType(attributeData);
 
-            if (valueType is null) return;
+            if (valueType is null) continue;
 
             var config = CreateSourceConfig(symbol, valueType);
             var source = GenerateSource(config);
 
             context.AddSource($"{config.StructName}.g.cs", source);   
         }
+    }
+
+    private static bool ValidateStruct(SourceProductionContext context, StructDeclarationSyntax @struct)
+    {
+        if (!@struct.IsMarkedAsPartial())
+        {
+            context.ReportDiagnostic(Diagnostics.MustBePartial.For(@struct));
+            return false;
+        }
+
+        return true;
     }
 
     private static StructGenerator.Config CreateSourceConfig(ISymbol symbol, string valueType)

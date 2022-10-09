@@ -2,6 +2,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using FluentAssertions.Primitives;
 using FluentAssertions.Specialized;
 using Microsoft.CodeAnalysis;
@@ -29,6 +30,15 @@ internal class CompilationOutputAssertions :
             .Should()
             .NotThrowAsync();
     }
+    
+    public AndConstraint<CompilationOutputAssertions> HaveDiagnostic(Diagnostic diagnostic)
+    {
+        Execute.Assertion
+            .ForCondition(Subject.Diagnostics.Any(d => d.Equals(diagnostic)))
+            .FailWith($"There is no diagnostic reported: '{diagnostic}'.");
+
+        return new AndConstraint<CompilationOutputAssertions>(this);
+    }
 
     private Task<VerifyResult> InvokeVerifier(CompilationOutput output, Source source, string caller)
     {
@@ -41,7 +51,7 @@ internal class CompilationOutputAssertions :
 
     private static SyntaxTree GetSyntaxTreeForComparison(CompilationOutput output)
     {
-        return output.Compilation.SyntaxTrees.Last();
+        return output.Compilation.SyntaxTrees.ElementAt(1);
     }
 
     private static string GetParameterAsString(Source source)

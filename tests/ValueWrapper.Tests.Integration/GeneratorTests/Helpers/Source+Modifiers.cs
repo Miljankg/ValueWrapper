@@ -29,4 +29,11 @@ public sealed partial class Source
         
         return new Source(_template, CurrentConfig);
     }
+
+    public Source MarkAsNonPartial()
+    {
+        CurrentConfig.Partial = false;
+        
+        return new Source(_template, CurrentConfig);
+    }
 }

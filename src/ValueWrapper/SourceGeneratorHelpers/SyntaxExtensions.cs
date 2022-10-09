@@ -1,11 +1,16 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using ValueWrapper.Attributes;
 
 namespace ValueWrapper.SourceGeneratorHelpers;
 
 internal static class SyntaxExtensions
 {
+    public static bool IsMarkedAsPartial(this StructDeclarationSyntax syntaxNode)
+    {
+        return syntaxNode.Modifiers.Any(SyntaxKind.PartialKeyword);
+    }
+    
     public static bool IsAnnotatedWithAttribute(this SyntaxNode syntaxNode, CancellationToken _)
     {
         return syntaxNode is StructDeclarationSyntax { AttributeLists.Count: > 0 };
@@ -46,7 +51,7 @@ internal static class SyntaxExtensions
         this AttributeSyntax attributeSyntax, 
         GeneratorSyntaxContext context, 
         CancellationToken token)
-        => context.SemanticModel.GetSymbolInfo(attributeSyntax, token).Symbol as IMethodSymbol;
+        => ModelExtensions.GetSymbolInfo(context.SemanticModel, attributeSyntax, token).Symbol as IMethodSymbol;
         
 
     private static string GetFullName(this ISymbol symbol) 
