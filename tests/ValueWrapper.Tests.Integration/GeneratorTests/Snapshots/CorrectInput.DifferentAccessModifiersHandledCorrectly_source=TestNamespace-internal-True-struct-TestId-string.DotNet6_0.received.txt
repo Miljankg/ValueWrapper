@@ -1,6 +1,6 @@
 ﻿namespace TestNamespace
 {
-    public readonly partial struct TestId
+    internal readonly partial struct TestId
     {
         public static TestId From(string value)
         {
@@ -13,10 +13,5 @@
         }
 
         public string Value { get; }
-
-        public override string ToString()
-        {
-            return Value?.ToString() ?? "<NULL>";
-        }
     }
 }

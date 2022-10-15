@@ -33,7 +33,7 @@ public sealed class StructGeneratorTests
             {
                 NamespaceName = namespaceName,
                 StructName = structName,
-                ValueTypeName = valueTypeName,
+                ValueTypeInfo =  TestType.ValueType(valueTypeName).ToInfo(),
                 IndentationString = "TestString",
                 AccessModifier = AccessModifierTestFactory.FromString(accessModifier)
             };
@@ -46,7 +46,7 @@ public sealed class StructGeneratorTests
                 Arg.Is<StructLayoutConfig>(c =>
                     c.NamespaceName == config.NamespaceName &&
                     c.StructName == config.StructName &&
-                    c.ValueTypeName == config.ValueTypeName &&
+                    c.ValueTypeInfo == config.ValueTypeInfo &&
                     c.AccessModifier == config.AccessModifier));
         }
         
@@ -69,7 +69,7 @@ public sealed class StructGeneratorTests
             {
                 NamespaceName = "TestNamespace",
                 StructName = "TestStructName",
-                ValueTypeName = "TestValueTypeName",
+                ValueTypeInfo = TestType.ValueType("TestValueTypeName").ToInfo(),
                 IndentationString = "TestString",
                 AccessModifier = AccessModifier.Public
             };
@@ -109,7 +109,7 @@ public sealed class StructGeneratorTests
             {
                 NamespaceName = "TestNamespace",
                 StructName = "TestStructName",
-                ValueTypeName = "TestValueTypeName",
+                ValueTypeInfo = TestType.ValueType("TestValueTypeName").ToInfo(),
                 IndentationString = indentationString,
                 AccessModifier = AccessModifier.Public
             };

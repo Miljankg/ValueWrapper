@@ -2,21 +2,21 @@
 {
     public readonly partial struct TestId
     {
-        public static TestId From(int value)
+        public static TestId From(SomeRandomNonExistingType value)
         {
             return new TestId(value);
         }
 
-        public TestId(int value)
+        public TestId(SomeRandomNonExistingType value)
         {
             Value = value;
         }
 
-        public int Value { get; }
+        public SomeRandomNonExistingType Value { get; }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return Value?.ToString() ?? "<NULL>";
         }
     }
 }

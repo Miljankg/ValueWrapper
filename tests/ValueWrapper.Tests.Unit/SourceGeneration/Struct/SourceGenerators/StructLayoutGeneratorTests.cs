@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using FluentAssertions;
 using ValueWrapper.SourceGeneration.Struct;
 using ValueWrapper.SourceLayout;
@@ -11,13 +12,11 @@ public sealed class StructLayoutGeneratorTests
     public class CreateLayout
     {
         [Theory]
-        [InlineData("Ns1", "Struct1", "Type1", "Method1", AccessModifierTestFactory.PublicAsString)]
-        [InlineData("Ns2", "Struct2", "Type2", "Method2", AccessModifierTestFactory.InternalAsString)]
-        [InlineData("Ns3", "Struct3", "Type3", "Method3", AccessModifierTestFactory.PrivateAsString)]
+        [MemberData(nameof(GetTestCases))]
         public void CreatesCorrectLayout(
             string namespaceName,
             string structName,
-            string valueType,
+            TestType valueType,
             string factoryMethodName,
             string accessModifier)
         {
@@ -28,7 +27,7 @@ public sealed class StructLayoutGeneratorTests
             {
                 NamespaceName = namespaceName,
                 StructName = structName,
-                ValueTypeName = valueType,
+                ValueTypeInfo = valueType.ToInfo(),
                 FactoryMethodName = factoryMethodName,
                 AccessModifier = AccessModifierTestFactory.FromString(accessModifier)
             };
@@ -42,17 +41,27 @@ public sealed class StructLayoutGeneratorTests
             layout.Should().BeEquivalentTo(expectedLayout, opts => opts.RespectingRuntimeTypes());
         }
 
+        
+        public static IEnumerable<object[]> GetTestCases()
+        {
+            yield return new object[] { "Ns1", "Struct1", TestType.ValueType("Type1"), "Method1", AccessModifierTestFactory.PublicAsString };
+            yield return new object[] { "Ns2", "Struct2", TestType.NullableValueType("Type2"), "Method2", AccessModifierTestFactory.InternalAsString };
+            yield return new object[] { "Ns3", "Struct3", TestType.ReferenceType("Type3"), "Method3", AccessModifierTestFactory.PrivateAsString };
+        }
+
         private static Namespace CreateExpectedLayout(string factoryMethodName, StructLayoutConfig config)
         {
-            var factoryMethod = new StaticFactoryMethod(config.StructName, factoryMethodName, config.ValueTypeName);
-            var constructor = new Constructor(config.StructName, config.ValueTypeName);
-            var valueProperty = new ValueProperty(config.ValueTypeName);
+            var factoryMethod = new StaticFactoryMethod(config.StructName, factoryMethodName, config.ValueTypeInfo.TypeName);
+            var constructor = new Constructor(config.StructName, config.ValueTypeInfo.TypeName);
+            var valueProperty = new ValueProperty(config.ValueTypeInfo.TypeName);
+            var toString = new ToString(!config.ValueTypeInfo.IsValueType || config.ValueTypeInfo.CanBeNull);
             var structure = new Structure(config.StructName, config.AccessModifier);
             var @namespace = new Namespace(config.NamespaceName);
 
             structure.Add(factoryMethod);
             structure.Add(constructor);
             structure.Add(valueProperty);
+            structure.Add(toString);
 
             @namespace.Add(structure);
             

@@ -15,7 +15,8 @@ public sealed partial class StructSourceNodeVisitorTests
             StructGenerator = Substitute.For<ISourceGenerator<Structure>>(),
             FactoryMethodGenerator = Substitute.For<ISourceGenerator<StaticFactoryMethod>>(),
             ConstructorGenerator = Substitute.For<ISourceGenerator<Constructor>>(),
-            PropertyGenerator = Substitute.For<ISourceGenerator<ValueProperty>>()
+            PropertyGenerator = Substitute.For<ISourceGenerator<ValueProperty>>(),
+            ToStringGenerator = Substitute.For<ISourceGenerator<ToString>>()
         };
     }
 }

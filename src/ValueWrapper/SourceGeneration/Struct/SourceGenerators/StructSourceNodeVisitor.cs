@@ -9,6 +9,7 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
     private readonly ISourceGenerator<Constructor> _constructorGenerator;
     private readonly ISourceGenerator<StaticFactoryMethod> _factoryMethodGenerator;
     private readonly ISourceGenerator<ValueProperty> _propertyGenerator;
+    private readonly ISourceGenerator<ToString> _toStringGenerator;
 
     public StructSourceNodeVisitor(GeneratorConfig generatorConfig)
     {
@@ -17,6 +18,7 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
         _constructorGenerator = generatorConfig.ConstructorGenerator;
         _factoryMethodGenerator = generatorConfig.FactoryMethodGenerator;
         _propertyGenerator = generatorConfig.PropertyGenerator;
+        _toStringGenerator = generatorConfig.ToStringGenerator;
     }
     
     public SourceTemplate Visit(Namespace @namespace, int level)
@@ -57,7 +59,14 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
         
         return _propertyGenerator.Generate(valueProperty, generatorCtx);
     }
-    
+
+    public SourceTemplate Visit(ToString toString, int level)
+    {
+        var generatorCtx = new SourceGeneratorContext(level);
+
+        return _toStringGenerator.Generate(toString, generatorCtx);
+    }
+
     private IEnumerable<SourceTemplate> GenerateChildSourceTemplates(ContainerNode node, int currentLevel)
     {
         return node
@@ -77,5 +86,7 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
         public ISourceGenerator<Constructor> ConstructorGenerator { get; init; } = null!;
 
         public ISourceGenerator<ValueProperty> PropertyGenerator { get; init; } = null!;
+        
+        public ISourceGenerator<ToString> ToStringGenerator { get; init; } = null!;
     }
 }

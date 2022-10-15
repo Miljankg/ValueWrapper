@@ -1,22 +1,22 @@
 ﻿namespace TestNamespace
 {
-    internal readonly partial struct TestId
+    public readonly partial struct TestId
     {
-        public static TestId From(int value)
+        public static TestId From(int? value)
         {
             return new TestId(value);
         }
 
-        public TestId(int value)
+        public TestId(int? value)
         {
             Value = value;
         }
 
-        public int Value { get; }
+        public int? Value { get; }
 
         public override string ToString()
         {
-            return Value.ToString();
+            return Value?.ToString() ?? "<NULL>";
         }
     }
 }

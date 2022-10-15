@@ -13,4 +13,6 @@ internal interface ISourceNodeVisitor<out TResult, in TParams>
     TResult Visit(StaticFactoryMethod staticFactoryMethod, TParams @params);
 
     TResult Visit(ValueProperty valueProperty, TParams @params);
+    
+    TResult Visit(ToString toString, TParams @params);
 }

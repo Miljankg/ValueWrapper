@@ -58,12 +58,9 @@ public class ValueWrapperGenerator : IIncrementalGenerator
             var attributeData = symbol.GetAttribute(compilation, typeof(ValueWrapperAttribute).FullName);
 
             if (attributeData is null) continue;
-
-            var valueType = GetValueType(attributeData);
-
-            if (valueType is null) continue;
-
-            var config = CreateSourceConfig(symbol, valueType);
+            
+            var valueTypeInfo = GetValueType(attributeData, compilation);
+            var config = CreateSourceConfig(symbol, valueTypeInfo);
             var source = GenerateSource(config);
 
             context.AddSource($"{config.StructName}.g.cs", source);   
@@ -81,7 +78,7 @@ public class ValueWrapperGenerator : IIncrementalGenerator
         return true;
     }
 
-    private static StructGenerator.Config CreateSourceConfig(ISymbol symbol, string valueType)
+    private static StructGenerator.Config CreateSourceConfig(ISymbol symbol, ValueTypeInfo valueTypeInfo)
     {
         var namespaceName = symbol.GetNamespace();
         var structName = symbol.Name;
@@ -91,7 +88,7 @@ public class ValueWrapperGenerator : IIncrementalGenerator
         {
             NamespaceName = namespaceName,
             StructName = structName,
-            ValueTypeName = valueType,
+            ValueTypeInfo = valueTypeInfo,
             AccessModifier = GetAccessModifier(accessibility),
             IndentationString = "    "
         };
@@ -110,12 +107,18 @@ public class ValueWrapperGenerator : IIncrementalGenerator
         };
     }
 
-    private static string? GetValueType(AttributeData attributeData)
+    private static ValueTypeInfo GetValueType(AttributeData attributeData, Compilation compilation)
     {
         var attributeParamValue = attributeData.GetParameterValue(position: 0) 
                                   ?? attributeData.GetParameterValue(ValueTypeParamName);
         
-        return attributeParamValue?.ToString();
+        var type = (INamedTypeSymbol) attributeParamValue!;
+
+        var isValueType = type.IsValueType;
+        var canBeNull = type.IsNullableValueType(compilation);
+        var typeName = attributeParamValue!.ToString();
+        
+        return new ValueTypeInfo(typeName, isValueType, canBeNull);
     }
 
     private static string GenerateSource(StructGenerator.Config config)

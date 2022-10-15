@@ -10,7 +10,8 @@ internal sealed class StructSourceNodeVisitorFactory : ISourceNodeVisitorFactory
             StructGenerator = new StructSourceGenerator(),
             FactoryMethodGenerator = new StaticFactoryMethodSourceGenerator(),
             ConstructorGenerator = new ConstructorSourceGenerator(),
-            PropertyGenerator = new ValuePropertySourceGenerator()
+            PropertyGenerator = new ValuePropertySourceGenerator(),
+            ToStringGenerator = new ToStringSourceGenerator()
         };
 
         return new StructSourceNodeVisitor(generatorConfig);

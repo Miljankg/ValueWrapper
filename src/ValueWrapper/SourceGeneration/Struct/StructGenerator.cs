@@ -36,7 +36,7 @@ internal sealed class StructGenerator
         {
             NamespaceName = config.NamespaceName,
             StructName = config.StructName,
-            ValueTypeName = config.ValueTypeName,
+            ValueTypeInfo = config.ValueTypeInfo,
             FactoryMethodName = "From",
             AccessModifier = config.AccessModifier
         };
@@ -67,7 +67,7 @@ internal sealed class StructGenerator
 
         public string StructName { get; init; } = null!;
         
-        public string ValueTypeName { get; init; } = null!;
+        public ValueTypeInfo ValueTypeInfo { get; init; } = null!;
         
         public string IndentationString { get; init; } = null!;
         

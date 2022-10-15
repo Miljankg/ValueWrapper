@@ -66,7 +66,9 @@ public partial class ValueWrapperGeneratorTests
         public static IEnumerable<object[]> GetValueTypeTestCases()
         {
             yield return new object[] { DefaultStruct.WithValueType("int") };
+            yield return new object[] { DefaultStruct.WithValueType("int?") };
             yield return new object[] { DefaultStruct.WithValueType("string") };
+            yield return new object[] { DefaultStruct.WithValueType("string?") };
         }
 
         public static IEnumerable<object[]> GetNameTestCases()

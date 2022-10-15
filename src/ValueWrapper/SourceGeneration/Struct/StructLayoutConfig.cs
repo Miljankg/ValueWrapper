@@ -8,7 +8,7 @@ internal sealed class StructLayoutConfig
 
     public string StructName { get; init; } = null!;
         
-    public string ValueTypeName { get; init; } = null!;
+    public ValueTypeInfo ValueTypeInfo { get; init; } = null!;
     
     public string FactoryMethodName { get; init; } = null!;
         
