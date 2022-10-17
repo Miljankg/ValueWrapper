@@ -54,6 +54,11 @@ public sealed class StructLayoutGeneratorTests
             var factoryMethod = new StaticFactoryMethod(config.StructName, factoryMethodName, config.ValueTypeInfo.TypeName);
             var constructor = new Constructor(config.StructName, config.ValueTypeInfo.TypeName);
             var valueProperty = new ValueProperty(config.ValueTypeInfo.TypeName);
+            var equals = new Equals(config.StructName, config.ValueTypeInfo.TypeName);
+            var equalsObject = new EqualsObject(config.StructName);
+            var equalsOperator = new EqualsOperator(config.StructName);
+            var notEqualOperator = new NotEqualOperator(config.StructName);
+            var getHashCode = new GetHashCode(!config.ValueTypeInfo.IsValueType || config.ValueTypeInfo.CanBeNull);
             var toString = new ToString(!config.ValueTypeInfo.IsValueType || config.ValueTypeInfo.CanBeNull);
             var structure = new Structure(config.StructName, config.AccessModifier);
             var @namespace = new Namespace(config.NamespaceName);
@@ -61,6 +66,11 @@ public sealed class StructLayoutGeneratorTests
             structure.Add(factoryMethod);
             structure.Add(constructor);
             structure.Add(valueProperty);
+            structure.Add(equals);
+            structure.Add(equalsObject);
+            structure.Add(equalsOperator);
+            structure.Add(notEqualOperator);
+            structure.Add(getHashCode);
             structure.Add(toString);
 
             @namespace.Add(structure);

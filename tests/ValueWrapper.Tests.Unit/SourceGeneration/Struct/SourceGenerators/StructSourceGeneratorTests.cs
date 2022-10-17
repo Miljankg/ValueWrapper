@@ -30,7 +30,7 @@ public sealed class StructSourceGeneratorTests
 
             // Assert.
             source.Lines.Should().HaveCount(3);
-            source.Should().ContainLine(0, $"{accessModifier} readonly partial struct {structName}", level);
+            source.Should().ContainLine(0, $"{accessModifier} readonly partial struct {structName} : IEquatable<{structName}>", level);
             source.Should().ContainLine(1, "{", level);
             source.Should().ContainLine(2, "}", level);
         }
@@ -69,7 +69,7 @@ public sealed class StructSourceGeneratorTests
             var source = generator.Generate(@struct, ctx);
             
             // Assert.
-            source.Should().ContainLine(0, $"{accessModifier} readonly partial struct {structName}", level);
+            source.Should().ContainLine(0, $"{accessModifier} readonly partial struct {structName} : IEquatable<{structName}>", level);
             source.Should().ContainLine(1, "{", level);
             source.Should().ContainLine(2, "TestLine1", 11);
             source.Should().ContainLine(3, "TestLine2", 12);

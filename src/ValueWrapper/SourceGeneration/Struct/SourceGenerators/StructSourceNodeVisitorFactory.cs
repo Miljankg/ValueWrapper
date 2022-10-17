@@ -11,7 +11,12 @@ internal sealed class StructSourceNodeVisitorFactory : ISourceNodeVisitorFactory
             FactoryMethodGenerator = new StaticFactoryMethodSourceGenerator(),
             ConstructorGenerator = new ConstructorSourceGenerator(),
             PropertyGenerator = new ValuePropertySourceGenerator(),
-            ToStringGenerator = new ToStringSourceGenerator()
+            ToStringGenerator = new ToStringSourceGenerator(),
+            EqualsGenerator = new EqualsGenerator(),
+            EqualsObjectGenerator = new EqualsObjectGenerator(),
+            EqualsOperatorGenerator = new EqualsOperatorGenerator(),
+            NotEqualOperatorGenerator = new NotEqualOperatorGenerator(),
+            GetHashCodeGenerator = new GetHashCodeGenerator()
         };
 
         return new StructSourceNodeVisitor(generatorConfig);

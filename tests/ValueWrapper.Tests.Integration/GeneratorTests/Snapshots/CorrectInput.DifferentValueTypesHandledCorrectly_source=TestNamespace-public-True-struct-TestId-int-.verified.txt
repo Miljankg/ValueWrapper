@@ -1,6 +1,6 @@
 ﻿namespace TestNamespace
 {
-    public readonly partial struct TestId
+    public readonly partial struct TestId : IEquatable<TestId>
     {
         public static TestId From(int? value)
         {
@@ -13,6 +13,31 @@
         }
 
         public int? Value { get; }
+
+        public bool Equals(TestId other)
+        {
+            return EqualityComparer<int?>.Default.Equals(Value, other.Value);
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is TestId other && Equals(other);
+        }
+
+        public static bool operator ==(TestId left, TestId right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(TestId left, TestId right)
+        {
+            return !left.Equals(right);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value?.GetHashCode() ?? 0;
+        }
 
         public override string ToString()
         {

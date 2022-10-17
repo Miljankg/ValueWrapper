@@ -8,7 +8,7 @@ internal sealed class StructSourceGenerator : SourceGenerator<Structure>
     {
         var sourceBuilder = new SourceTemplateBuilder();
         
-        sourceBuilder.AddLine(context.Level, $"{GetAccessModifierString(@struct.AccessModifier)} readonly partial struct {@struct.Name}");
+        sourceBuilder.AddLine(context.Level, GenerateStructDefinition(@struct));
         sourceBuilder.AddLine(context.Level, "{");
         
         AddChildTemplates(context, sourceBuilder);
@@ -16,6 +16,12 @@ internal sealed class StructSourceGenerator : SourceGenerator<Structure>
         sourceBuilder.AddLine(context.Level, "}");
 
         return sourceBuilder.Build();
+    }
+
+    private static string GenerateStructDefinition(Structure @struct)
+    {
+        return $"{GetAccessModifierString(@struct.AccessModifier)} readonly partial struct {@struct.Name} " +
+               $": IEquatable<{@struct.Name}>";
     }
 
     private static string GetAccessModifierString(AccessModifier accessModifier)

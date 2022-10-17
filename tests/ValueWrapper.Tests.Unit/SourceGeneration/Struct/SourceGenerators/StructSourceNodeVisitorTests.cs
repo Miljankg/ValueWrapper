@@ -16,6 +16,11 @@ public sealed partial class StructSourceNodeVisitorTests
             FactoryMethodGenerator = Substitute.For<ISourceGenerator<StaticFactoryMethod>>(),
             ConstructorGenerator = Substitute.For<ISourceGenerator<Constructor>>(),
             PropertyGenerator = Substitute.For<ISourceGenerator<ValueProperty>>(),
+            EqualsGenerator = Substitute.For<ISourceGenerator<Equals>>(),
+            EqualsObjectGenerator = Substitute.For<ISourceGenerator<EqualsObject>>(),
+            EqualsOperatorGenerator = Substitute.For<ISourceGenerator<EqualsOperator>>(),
+            NotEqualOperatorGenerator = Substitute.For<ISourceGenerator<NotEqualOperator>>(),
+            GetHashCodeGenerator = Substitute.For<ISourceGenerator<GetHashCode>>(),
             ToStringGenerator = Substitute.For<ISourceGenerator<ToString>>()
         };
     }
