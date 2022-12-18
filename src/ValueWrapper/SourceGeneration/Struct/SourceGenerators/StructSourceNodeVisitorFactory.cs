@@ -6,6 +6,8 @@ internal sealed class StructSourceNodeVisitorFactory : ISourceNodeVisitorFactory
     {
         var generatorConfig = new StructSourceNodeVisitor.GeneratorConfig
         {
+            RootNodeGenerator = new RootNodeGenerator(),
+            DirectiveGenerator =  new DirectiveGenerator(),
             NamespaceGenerator = new NamespaceSourceGenerator(),
             StructGenerator = new StructSourceGenerator(),
             FactoryMethodGenerator = new StaticFactoryMethodSourceGenerator(),

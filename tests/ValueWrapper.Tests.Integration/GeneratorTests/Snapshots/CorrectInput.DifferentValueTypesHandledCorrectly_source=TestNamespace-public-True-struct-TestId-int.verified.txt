@@ -1,4 +1,6 @@
-﻿namespace TestNamespace
+﻿#nullable enable
+
+namespace TestNamespace
 {
     public readonly partial struct TestId : IEquatable<TestId>
     {

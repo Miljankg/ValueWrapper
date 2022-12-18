@@ -59,7 +59,7 @@ public sealed class StructGeneratorTests
             var printer = Substitute.For<ISourceTemplatePrinter>();
 
             // Set up Layout Generator.
-            var namespaceNode = new Namespace(name: "test");
+            var namespaceNode = new RootNode();
 
             layoutGenerator.GenerateLayout(Arg.Any<StructLayoutConfig>()).Returns(namespaceNode);
             
@@ -93,7 +93,7 @@ public sealed class StructGeneratorTests
             var printer = Substitute.For<ISourceTemplatePrinter>();
 
             // Set up Layout Generator.
-            var namespaceNode = new Namespace(name: "test");
+            var namespaceNode = new RootNode();
 
             layoutGenerator.GenerateLayout(Arg.Any<StructLayoutConfig>()).Returns(namespaceNode);
             

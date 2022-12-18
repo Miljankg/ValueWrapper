@@ -4,6 +4,10 @@ namespace ValueWrapper.SourceGeneration;
 
 internal interface ISourceNodeVisitor<out TResult, in TParams>
 {
+    TResult Visit(RootNode root, TParams @params);
+    
+    TResult Visit(Directive directive, TParams @params);
+    
     TResult Visit(Namespace @namespace, TParams @params);
 
     TResult Visit(Structure @struct, TParams @params);

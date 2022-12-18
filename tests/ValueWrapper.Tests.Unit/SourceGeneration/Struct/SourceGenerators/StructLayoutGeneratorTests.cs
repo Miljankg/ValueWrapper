@@ -49,8 +49,10 @@ public sealed class StructLayoutGeneratorTests
             yield return new object[] { "Ns3", "Struct3", TestType.ReferenceType("Type3"), "Method3", AccessModifierTestFactory.PrivateAsString };
         }
 
-        private static Namespace CreateExpectedLayout(string factoryMethodName, StructLayoutConfig config)
+        private static RootNode CreateExpectedLayout(string factoryMethodName, StructLayoutConfig config)
         {
+            var root = new RootNode();
+            var nullableEnable = Directive.NullableEnable;
             var factoryMethod = new StaticFactoryMethod(config.StructName, factoryMethodName, config.ValueTypeInfo.TypeName);
             var constructor = new Constructor(config.StructName, config.ValueTypeInfo.TypeName);
             var valueProperty = new ValueProperty(config.ValueTypeInfo.TypeName);
@@ -74,8 +76,10 @@ public sealed class StructLayoutGeneratorTests
             structure.Add(toString);
 
             @namespace.Add(structure);
-            
-            return @namespace;
+            root.Add(nullableEnable);
+            root.Add(@namespace);
+
+            return root;
         }
     }
 }

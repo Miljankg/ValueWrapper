@@ -30,7 +30,7 @@ internal sealed class StructGenerator
         return source;
     }
 
-    private Namespace AssembleStructLayout(Config config)
+    private RootNode AssembleStructLayout(Config config)
     {
         var layoutConfig = new StructLayoutConfig
         {
@@ -44,11 +44,11 @@ internal sealed class StructGenerator
         return _layoutGenerator.GenerateLayout(layoutConfig);
     }
 
-    private SourceTemplate GenerateSourceTemplate(Namespace @namespace)
+    private SourceTemplate GenerateSourceTemplate(RootNode node)
     {
         const int initialLevel = 0;
         
-        return _visitor.Visit(@namespace, initialLevel);
+        return _visitor.Visit(node, initialLevel);
     }
 
     private string PrintSource(SourceTemplate sourceTemplate, Config config)

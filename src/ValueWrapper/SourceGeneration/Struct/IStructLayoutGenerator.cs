@@ -4,5 +4,5 @@ namespace ValueWrapper.SourceGeneration.Struct;
 
 internal interface IStructLayoutGenerator
 {
-    public Namespace GenerateLayout(StructLayoutConfig config);
+    public RootNode GenerateLayout(StructLayoutConfig config);
 }

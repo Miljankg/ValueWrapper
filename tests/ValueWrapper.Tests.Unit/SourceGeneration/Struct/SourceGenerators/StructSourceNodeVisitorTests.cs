@@ -11,6 +11,8 @@ public sealed partial class StructSourceNodeVisitorTests
     {
         return new StructSourceNodeVisitor.GeneratorConfig
         {
+            RootNodeGenerator = Substitute.For<ISourceGenerator<RootNode>>(),
+            DirectiveGenerator = Substitute.For<ISourceGenerator<Directive>>(),
             NamespaceGenerator = Substitute.For<ISourceGenerator<Namespace>>(),
             StructGenerator = Substitute.For<ISourceGenerator<Structure>>(),
             FactoryMethodGenerator = Substitute.For<ISourceGenerator<StaticFactoryMethod>>(),

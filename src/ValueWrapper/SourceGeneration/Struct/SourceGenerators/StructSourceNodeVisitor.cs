@@ -4,6 +4,7 @@ namespace ValueWrapper.SourceGeneration.Struct.SourceGenerators;
 
 internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
 {
+    private readonly ISourceGenerator<Directive> _directiveGenerator;
     private readonly ISourceGenerator<Namespace> _namespaceGenerator;
     private readonly ISourceGenerator<Structure> _structGenerator;
     private readonly ISourceGenerator<Constructor> _constructorGenerator;
@@ -15,9 +16,12 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
     private readonly ISourceGenerator<EqualsObject> _equalsObjectGenerator;
     private readonly ISourceGenerator<EqualsOperator> _equalsOperatorGenerator;
     private readonly ISourceGenerator<NotEqualOperator> _notEqualOperatorGenerator;
+    private readonly ISourceGenerator<RootNode> _rootNodeGenerator;
 
     public StructSourceNodeVisitor(GeneratorConfig generatorConfig)
     {
+        _rootNodeGenerator = generatorConfig.RootNodeGenerator;
+        _directiveGenerator = generatorConfig.DirectiveGenerator;
         _namespaceGenerator = generatorConfig.NamespaceGenerator;
         _structGenerator = generatorConfig.StructGenerator;
         _constructorGenerator = generatorConfig.ConstructorGenerator;
@@ -30,7 +34,27 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
         _equalsOperatorGenerator = generatorConfig.EqualsOperatorGenerator;
         _notEqualOperatorGenerator = generatorConfig.NotEqualOperatorGenerator;
     }
-    
+
+    public SourceTemplate Visit(RootNode root, int level)
+    {
+        // Intentionally reduce level as RootNode has no content, so there is no need for indentation.
+        // TODO: This concern should maybe be addressed within the generator itself.
+        level -= 1;
+        
+        var childSourceTemplates = GenerateChildSourceTemplates(root, level);
+
+        var generatorCtx = new SourceGeneratorContext(childSourceTemplates, level);
+
+        return _rootNodeGenerator.Generate(root, generatorCtx);
+    }
+
+    public SourceTemplate Visit(Directive directive, int level)
+    {
+        var generatorCtx = new SourceGeneratorContext(level);
+
+        return _directiveGenerator.Generate(directive, generatorCtx);
+    }
+
     public SourceTemplate Visit(Namespace @namespace, int level)
     {
         var childSourceTemplates = GenerateChildSourceTemplates(@namespace, level);
@@ -122,6 +146,10 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
 
     public sealed class GeneratorConfig
     {
+        public ISourceGenerator<RootNode> RootNodeGenerator { get; init; } = null!;
+        
+        public ISourceGenerator<Directive> DirectiveGenerator { get; init; } = null!;
+
         public ISourceGenerator<Namespace> NamespaceGenerator { get; init; } = null!;
 
         public ISourceGenerator<Structure> StructGenerator { get; init; } = null!;
@@ -131,17 +159,17 @@ internal sealed class StructSourceNodeVisitor : IStructSourceNodeVisitor
         public ISourceGenerator<Constructor> ConstructorGenerator { get; init; } = null!;
 
         public ISourceGenerator<ValueProperty> PropertyGenerator { get; init; } = null!;
-        
+
         public ISourceGenerator<ToString> ToStringGenerator { get; init; } = null!;
-        
+
         public ISourceGenerator<GetHashCode> GetHashCodeGenerator { get; init; } = null!;
-        
+
         public ISourceGenerator<Equals> EqualsGenerator { get; init; } = null!;
-        
+
         public ISourceGenerator<EqualsObject> EqualsObjectGenerator { get; init; } = null!;
-        
+
         public ISourceGenerator<EqualsOperator> EqualsOperatorGenerator { get; init; } = null!;
-        
+
         public ISourceGenerator<NotEqualOperator> NotEqualOperatorGenerator { get; init; } = null!;
     }
 }

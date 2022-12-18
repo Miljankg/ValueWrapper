@@ -7,7 +7,7 @@ internal sealed class SourceTemplatePrinter : ISourceTemplatePrinter
     public string Print(SourceTemplate template, SourceTemplatePrinterConfig config)
     {
         var sb = new StringBuilder();
-        
+
         foreach (var line in template.Lines)
         {
             var prefix = GeneratePrefix(config, line);
