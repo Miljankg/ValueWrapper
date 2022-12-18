@@ -1,7 +1,9 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ValueWrapper.Attributes;
+using ValueWrapper.SourceGeneration;
 using ValueWrapper.SourceGeneration.Struct;
 using ValueWrapper.SourceGeneratorHelpers;
 using ValueWrapper.SourceLayout;
@@ -62,8 +64,9 @@ public class ValueWrapperGenerator : IIncrementalGenerator
             var valueTypeInfo = GetValueType(attributeData, compilation);
             var config = CreateSourceConfig(symbol, valueTypeInfo);
             var source = GenerateSource(config);
-
-            context.AddSource($"{config.StructName}.g.cs", source);   
+            var sourceFileName = GenerateFilename(config);
+            
+            context.AddSource(sourceFileName, source);   
         }
     }
 
@@ -126,5 +129,12 @@ public class ValueWrapperGenerator : IIncrementalGenerator
         var structGenerator = new StructGeneratorFactory().Create();
     
         return structGenerator.Generate(config);
+    }
+
+    private static string GenerateFilename(StructGenerator.Config config)
+    {
+        var fileNameGenerator = new SourceFileNameGenerator();
+
+        return fileNameGenerator.GenerateFileName(config.NamespaceName, config.StructName);
     }
 }

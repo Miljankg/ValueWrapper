@@ -32,7 +32,6 @@
 
     <ItemGroup>
       <Folder Include="GeneratorTests\Snapshots" />
-      <Folder Include="GeneratorTests\Snapshots\" />
     </ItemGroup>
 
 </Project>
