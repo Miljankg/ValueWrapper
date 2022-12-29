@@ -68,6 +68,7 @@ public readonly partial struct TestValue
 The code is then automatically generated for this struct. Along with it, each the generated struct has:
 
 - A proper constructor, accepting a value of a correct type, annotated in the attribute.
+- A static factory method From, accepting a value of a correct type, annotated in the attribute.
 - A property that enables retrieval of the raw value.
 - All equality methods, including the equality operators.
 - ToString method.
@@ -75,7 +76,7 @@ The code is then automatically generated for this struct. Along with it, each th
 ```csharp
 var testValue1 = new TestValue("TestString1");
 var testValue2 = new TestValue("TestString2");
-var testValue3 = new TestValue("TestString1");
+var testValue3 = TestValue.From("TestString1");
 var testValue4 = default(TestValue);
 
 // Outputs: "TestString1"
@@ -98,19 +99,6 @@ Console.WriteLine(testValue1.Equals(testValue2));
 
 // Outputs: False
 Console.WriteLine(testValue1 == testValue3);
-```
-It is also possible to created own static factory methods, in case you want that:
-
-```csharp
-[ValueWrapper(typeof(Guid))]
-public readonly partial struct TestValue
-{
-    public static CreateNew()
-        => new TestValue(Guid.NewGuid());
-}
-```
-```csharp
-var testValue2 = TestValue.CreateNew();
 ```
 
 **Please note**, the project is its in early stages, and further optimizations and updates are yet to come. Any feedback on any aspect of this is much appreciated, as the main purpose of this project is learning.
