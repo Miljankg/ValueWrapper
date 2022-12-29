@@ -4,7 +4,7 @@
 * [How to use Value Wrapper](#how-to-use-value-wrapper)  
 
 # Credits
-This project was done as a part of learning about code generation in .NET. As such a lot of things were done in according to [Andrew Lock's blog post](https://andrewlock.net/series/creating-a-source-generator/). Andrew also has his own library solving a similar problem like this one: [StronglyTypedId](https://github.com/andrewlock/StronglyTypedId).
+This project was done as a part of learning about code generation in .NET. As such, a lot of things were done according to instructions in [Andrew Lock's blog post](https://andrewlock.net/series/creating-a-source-generator/). Andrew also has his own library solving a similar problem like this one: [StronglyTypedId](https://github.com/andrewlock/StronglyTypedId).
 
 Please take a look at his blog and the project itself. I would also use this to thank him for the work he did, as without his information this would be much harder.
 
