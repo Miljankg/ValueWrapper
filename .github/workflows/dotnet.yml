@@ -22,7 +22,25 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal tests/ValueWrapper.Tests.Unit
+      env:
+        CollectCoverage: true
+        CoverletOutputFormat: opencover
+        CoverletOutput: TestResults/
+    - name: Create Test Coverage Badge
+      uses: simon-k/dotnet-code-coverage-badge@v1.0.0
+      id: create_coverage_badge
+      with:
+        label: Unit Test Coverage
+        color: brightgreen
+        path: tests/ValueWrapper.Tests.Unit/TestResults/coverage.opencover.xml
+        gist-filename: code-coverage.json
+        gist-id: 529dfecfa3844f030a36d5ed38b82945
+        gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}       
+    - name: Print Unit Test Coverage
+      run: echo "Code coverage percentage ${{steps.create_coverage_badge.outputs.percentage}}%"
+    - name: Print badge data
+      run: echo "Badge data ${{steps.test_step.outputs.badge}}"
     - name: Publish NuGet
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
