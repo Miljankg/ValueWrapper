@@ -1,3 +1,4 @@
+![example branch parameter](https://github.com/Miljankg/ValueWrapper/actions/workflows/dotnet.yml/badge.svg?branch=main)
 # Table of Contents
 * [Credits](#credits)  
 * [Introduction](#introduction)  
