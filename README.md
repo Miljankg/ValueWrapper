@@ -1,4 +1,5 @@
-![example branch parameter](https://github.com/Miljankg/ValueWrapper/actions/workflows/dotnet.yml/badge.svg?branch=main)
+![code-coverage-badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Miljankg/529dfecfa3844f030a36d5ed38b82945/raw/code-coverage.json)
+![build-status-badge](https://github.com/Miljankg/ValueWrapper/actions/workflows/dotnet.yml/badge.svg?branch=main)
 # Table of Contents
 * [Credits](#credits)  
 * [Introduction](#introduction)  
