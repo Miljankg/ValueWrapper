@@ -25,42 +25,29 @@ jobs:
       run: dotnet test --verbosity normal tests/ValueWrapper.Tests.Unit
       env:
         CollectCoverage: true
-        CoverletOutputFormat: opencover
-        CoverletOutput: TestResults/
+        CoverletOutput: ../../TestResults/unit-test-coverage.json
     - name: Integration Tests
       run: dotnet test --verbosity normal tests/ValueWrapper.Tests.Integration
       env:
         CollectCoverage: true
         CoverletOutputFormat: opencover
-        CoverletOutput: TestResults/
-    - name: Create Unit Test Coverage Badge
+        CoverletOutput: ../../TestResults/coverage.opencover.xml
+        MergeWith: ../../TestResults/unit-test-coverage.json
+        Exclude: "[ValueWrapper.Tests*]*"
+    - name: Create Total Test Coverage Badge
       uses: simon-k/dotnet-code-coverage-badge@v1.0.0
-      id: create_unit_test_coverage_badge
+      id: create_total_test_coverage_badge
       with:
-        label: Unit Test Coverage
+        label: Total Test Coverage
         color: brightgreen
-        path: tests/ValueWrapper.Tests.Unit/TestResults/coverage.opencover.xml
-        gist-filename: value-wrapper-unit-test-code-coverage.json
-        gist-id: 529dfecfa3844f030a36d5ed38b82945
+        path: TestResults/coverage.opencover.xml
+        gist-filename: value-wrapper-total-test-code-coverage.json
+        gist-id: 279c1aef1f40f826150b879af3072c46
         gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}       
-    - name: Print Unit Test Coverage
-      run: echo "Code coverage percentage ${{steps.create_unit_test_coverage_badge.outputs.percentage}}%"
-    - name: Print Unit Test Badge Data
-      run: echo "Badge data ${{steps.create_unit_test_coverage_badge.outputs.badge}}"
-    - name: Create Unit Test Coverage Badge
-      uses: simon-k/dotnet-code-coverage-badge@v1.0.0
-      id: create_integration_test_coverage_badge
-      with:
-        label: Integration Test Coverage
-        color: brightgreen
-        path: tests/ValueWrapper.Tests.Integration/TestResults/coverage.opencover.xml
-        gist-filename: value-wrapper-integration-test-code-coverage.json
-        gist-id: ddfe8cbe37e50e2484ecc87bbc79c9ac
-        gist-auth-token: ${{ secrets.GIST_AUTH_TOKEN }}
-    - name: Print Integration Test Coverage
-      run: echo "Code coverage percentage ${{steps.create_integration_test_coverage_badge.outputs.percentage}}%"
-    - name: Print Integration Test Badge Data
-      run: echo "Badge data ${{steps.create_integration_test_coverage_badge.outputs.badge}}"
+    - name: Print Total Test Coverage
+      run: echo "Code coverage percentage ${{steps.create_total_test_coverage_badge.outputs.percentage}}%"
+    - name: Print Total Test Badge Data
+      run: echo "Badge data ${{steps.create_total_test_coverage_badge.outputs.badge}}"
     - name: Create NuGet package
       run: dotnet pack --no-build -c Release src/ValueWrapper/ValueWrapper.csproj -o .
     - name: Publish NuGet on version change
