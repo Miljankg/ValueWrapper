@@ -100,7 +100,7 @@ Console.WriteLine(testValue1 == testValue3);
 Console.WriteLine(testValue1.Equals(testValue2));
 
 // Outputs: False
-Console.WriteLine(testValue1 == testValue3);
+Console.WriteLine(testValue1 == testValue2);
 ```
 
 **Please note**, any feedback on any aspect of this project is much appreciated. The project is in the early stages, and further optimizations and updates are yet to come. Criticism and suggestions are welcome.
